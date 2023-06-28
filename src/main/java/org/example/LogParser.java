@@ -41,16 +41,32 @@ import java.time.format.DateTimeFormatter;
      private long sequence;  //操作序列号，用于关联一次购买产生多条不同类型的货币日志 */
 
 public class LogParser {
+//    List<Log> logs= new ArrayList<>();
+    int  currencyCounter= 0;
+    int totalCounter = 0;
+    public void printCounter(){
+        System.out.println("currencyCounter:"  + currencyCounter);
+        System.out.println("totalCounter:"  + totalCounter);
+    }
     public List<Log> parse(String logFile) {
         List<Log> logs = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(logFile))) {
             String line;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             while ((line = reader.readLine()) != null) {
+                totalCounter++;
                 String[] fields = line.split("\\|");
                 if (fields.length != 30) {
                     continue;
                 }
+                
+                //以空格为分隔符，将field[0]分割成字符串数组，然后判断数组中最后一个不是"Currency"，则跳过这一行
+                String[] str = fields[0].split(" ");
+                if (!str[str.length - 1].equals("Currency")) {
+                    continue;
+                }
+                currencyCounter++;
+
                 String gameSvrId = fields[1];
                 
                 LocalDateTime dtEventTime = LocalDateTime.parse(fields[2], formatter);

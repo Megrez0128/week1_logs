@@ -5,11 +5,13 @@ import org.apache.commons.cli.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Main {
-    public static String addressPrefix = "E:\\CodeStorage\\Github\\week1_logs\\src\\main\\resources\\";
+    public static String addressPrefix = "E:\\CodeStorage\\Github\\week1_logs\\src\\main\\resources\\data\\";
+    static ListFilesInFolder listFilesInFolder = new ListFilesInFolder(addressPrefix);
     // TODO: 目前设置的是电脑本地绝对路径，可以改成相对路径
     public static void main(String[] args) throws IOException {
         CommandLine cmd = parseArgs(args);
@@ -21,11 +23,16 @@ public class Main {
         String logFilePath = cmd.getOptionValue("l");
 
         LogParser parser = new LogParser();
-        List<Log> logs = parser.parse(addressPrefix + "currency_flow.txt");
+
+        List<Log> logs = new ArrayList<>();
+
+        //遍历listFilesInFolder
+        for (String file : listFilesInFolder.getFileNameList()) {
+            //解析文件
+            logs.addAll(parser.parse(addressPrefix + file));
+        }
 
         LogAnalyzer analyzer = new LogAnalyzer();
-
-
 
         if (secondFunc) {
             Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary = analyzer.summarizeByServerUserCharReason(logs);
@@ -58,17 +65,7 @@ public class Main {
             outputToConsole(serverUserCharSummary);
         }
 
-        //
-
-//将logs输出到res.txt
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(addressPrefix +"res.txt"))) {
-//            for (Log log : logs) {
-//                writer.write(log.toString());
-//                writer.newLine();
-//            }
-//        }catch (Exception e) {
-//            throw new MainException(e);
-//        }
+        parser.printCounter();
     }
 
     public static void outputToFile(Map<String, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
