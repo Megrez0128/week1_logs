@@ -16,7 +16,6 @@ public class Main {
             return;
         }
         //打印命令行参数
-        System.out.println("打印命令行参数");
         boolean secondFunc = cmd.hasOption("m");
         String logFilePath = cmd.getOptionValue("l");
 
@@ -25,54 +24,42 @@ public class Main {
 
         LogAnalyzer analyzer = new LogAnalyzer();
 
-        String gameSvrId = cmd.getOptionValue("g");
-        String vUserID = cmd.getOptionValue("u");
-        String vRoleID = cmd.getOptionValue("r");
-        String mainReason = cmd.getOptionValue("m");
+
 
         if (secondFunc) {
-            Map<String, Map<String, Map<String, Map<String, String>>>> serverUserCharReasonSummary = analyzer.summarizeByServerUserCharReason(logs);
+            Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary = analyzer.summarizeByServerUserCharReason(logs);
             // 输出到文件或控制台...
+            //将serverUserCharReasonSummary输出到res.txt
+            outputToFileWithReason(serverUserCharReasonSummary);
+            //将serverUserCharReasonSummary输出到控制台
+//            outputToConsoleWithReason(serverUserCharReasonSummary);
+
+            String gameSvrId = cmd.getOptionValue("g");
+            String vUserID = cmd.getOptionValue("u");
+            String vRoleID = cmd.getOptionValue("r");
+            Integer mainReason = Integer.valueOf(cmd.getOptionValue("m"));
+            //查询,根据命令行参数查询
+            //g,u,r,m唯一确定一条记录
+            String result = analyzer.query(serverUserCharReasonSummary,gameSvrId,vUserID,vRoleID,mainReason);
+            //将查询结果输出到控制台
+            System.out.println("查询结果：");
+            System.out.println("登录的游戏服务器编号 GameSvrId:" + gameSvrId);
+            System.out.println("\t用户ID vUserID:" + vUserID);
+            System.out.println("\t\t玩家角色ID vRoleID:" + vRoleID);
+            System.out.println("\t\t\t主要原因 MainReason:" + mainReason);
+            System.out.println("\t\t\t" + result);
+            
         } else {
             Map<String,Map<String, Map<String,Map<String,String>>>> serverUserCharSummary = analyzer.summarizeByServerUserChar(logs);
             // 输出到文件或控制台...
             //将serverUserCharSummary输出到res.txt
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(addressPrefix +"res.txt"))) {
-                for (Map.Entry<String, Map<String, Map<String, Map<String, String>>>> entry : serverUserCharSummary.entrySet()) {
-                    writer.write("登录的游戏服务器编号 GameSvrId:" + entry.getKey());
-                    writer.newLine();
-                    for (Map.Entry<String, Map<String, Map<String, String>>> entry1 : entry.getValue().entrySet()) {
-                        writer.write("用户ID vUserID:" + entry1.getKey());
-                        writer.newLine();
-                        for (Map.Entry<String, Map<String, String>> entry2 : entry1.getValue().entrySet()) {
-                            writer.write("玩家角色ID vRoleID:" + entry2.getKey());
-                            writer.newLine();
-                            for (Map.Entry<String, String> entry3 : entry2.getValue().entrySet()) {
-                                writer.write("-" + entry3.getKey() + " " + entry3.getValue());
-                                writer.newLine();
-                            }
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                throw new MainException(e);
-            }
-            //将serverUserCharSummary输出到控制台
-            for (Map.Entry<String, Map<String, Map<String, Map<String, String>>>> entry : serverUserCharSummary.entrySet()) {
-                System.out.println("登录的游戏服务器编号 GameSvrId:" + entry.getKey());
-                for (Map.Entry<String, Map<String, Map<String, String>>> entry1 : entry.getValue().entrySet()) {
-                    System.out.println("用户ID vUserID:" + entry1.getKey());
-                    for (Map.Entry<String, Map<String, String>> entry2 : entry1.getValue().entrySet()) {
-                        System.out.println("玩家角色ID vRoleID:" + entry2.getKey());
-                        for (Map.Entry<String, String> entry3 : entry2.getValue().entrySet()) {
-                            System.out.println("-" + entry3.getKey() + ": " + entry3.getValue());
-                        }
-                    }
-                }
-            }
+            outputToFile(serverUserCharSummary);
+            outputToConsole(serverUserCharSummary);
         }
-        analyzer.analyze(logs);
-        //将logs输出到res.txt
+
+        //
+
+//将logs输出到res.txt
 //        try (BufferedWriter writer = new BufferedWriter(new FileWriter(addressPrefix +"res.txt"))) {
 //            for (Log log : logs) {
 //                writer.write(log.toString());
@@ -81,6 +68,92 @@ public class Main {
 //        }catch (Exception e) {
 //            throw new MainException(e);
 //        }
+    }
+
+    public static void outputToFile(Map<String, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(addressPrefix +"res.txt"))) {
+            for (Map.Entry<String, Map<String, Map<String, Map<String, String>>>> entry : serverUserCharSummary.entrySet()) {
+                writer.write("登录的游戏服务器编号 GameSvrId:" + entry.getKey());
+                writer.newLine();
+                for (Map.Entry<String, Map<String, Map<String, String>>> entry1 : entry.getValue().entrySet()) {
+                    writer.write("\t用户ID vUserID:" + entry1.getKey());
+                    writer.newLine();
+                    for (Map.Entry<String, Map<String, String>> entry2 : entry1.getValue().entrySet()) {
+                        writer.write("\t\t玩家角色ID vRoleID:" + entry2.getKey());
+                        writer.newLine();
+                        for (Map.Entry<String, String> entry3 : entry2.getValue().entrySet()) {
+                            writer.write("\t\t-" + entry3.getKey() + " " + entry3.getValue());
+                            writer.newLine();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new MainException(e);
+        }
+    }
+
+    public static void outputToFileWithReason(Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary) {
+        //将serverUserCharReasonSummary输出到res.txt
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(addressPrefix +"res.txt"))) {
+            for(Map.Entry<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> entry : serverUserCharReasonSummary.entrySet()){
+                writer.write("登录的游戏服务器编号 GameSvrId:" + entry.getKey());
+                writer.newLine();
+                for(Map.Entry<String, Map<String,Map<Integer,Map<String,String>>>> entry1 : entry.getValue().entrySet()){
+                    writer.write("\t用户ID vUserID:" + entry1.getKey());
+                    writer.newLine();
+                    for(Map.Entry<String,Map<Integer,Map<String,String>>> entry2 : entry1.getValue().entrySet()){
+                        writer.write("\t\t玩家角色ID vRoleID:" + entry2.getKey());
+                        writer.newLine();
+                        for(Map.Entry<Integer,Map<String,String>> entry3 : entry2.getValue().entrySet()){
+                            writer.write("\t\t\t主要原因 MainReason:" + entry3.getKey());
+                            writer.newLine();
+                            for(Map.Entry<String,String> entry4 : entry3.getValue().entrySet()){
+                                writer.write("\t\t\t-" + entry4.getKey() + ": " + entry4.getValue());
+                                writer.newLine();
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new MainException(e);
+        }
+
+    }
+
+    private static void outputToConsole(Map<String, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
+        //将serverUserCharSummary输出到控制台
+        for (Map.Entry<String, Map<String, Map<String, Map<String, String>>>> entry : serverUserCharSummary.entrySet()) {
+            System.out.println("登录的游戏服务器编号 GameSvrId:" + entry.getKey());
+            for (Map.Entry<String, Map<String, Map<String, String>>> entry1 : entry.getValue().entrySet()) {
+                System.out.println("\t用户ID vUserID:" + entry1.getKey());
+                for (Map.Entry<String, Map<String, String>> entry2 : entry1.getValue().entrySet()) {
+                    System.out.println("\t\t玩家角色ID vRoleID:" + entry2.getKey());
+                    for (Map.Entry<String, String> entry3 : entry2.getValue().entrySet()) {
+                        System.out.println("\t\t-" + entry3.getKey() + ": " + entry3.getValue());
+                    }
+                }
+            }
+        }
+    }
+    public static void outputToConsoleWithReason(Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary) {
+        //将serverUserCharReasonSummary输出到控制台
+        for(Map.Entry<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> entry : serverUserCharReasonSummary.entrySet()){
+            System.out.println("登录的游戏服务器编号 GameSvrId:" + entry.getKey());
+            for(Map.Entry<String, Map<String,Map<Integer,Map<String,String>>>> entry1 : entry.getValue().entrySet()){
+                System.out.println("\t用户ID vUserID:" + entry1.getKey());
+                for(Map.Entry<String,Map<Integer,Map<String,String>>> entry2 : entry1.getValue().entrySet()){
+                    System.out.println("\t\t玩家角色ID vRoleID:" + entry2.getKey());
+                    for(Map.Entry<Integer,Map<String,String>> entry3 : entry2.getValue().entrySet()){
+                        System.out.println("\t\t\t主要原因 MainReason:" + entry3.getKey());
+                        for(Map.Entry<String,String> entry4 : entry3.getValue().entrySet()){
+                            System.out.println("\t\t\t-" + entry4.getKey() + ": " + entry4.getValue());
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private static CommandLine parseArgs(String[] args) {

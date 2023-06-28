@@ -52,7 +52,7 @@ public class LogParser {
                     continue;
                 }
                 String gameSvrId = fields[1];
-                System.out.println(fields[2]);
+//                System.out.println(fields[2]);
                 
                 LocalDateTime dtEventTime = LocalDateTime.parse(fields[2], formatter);
                 String vGameAppid = fields[3];
@@ -68,7 +68,7 @@ public class LogParser {
                 int changeValue = Integer.parseInt(fields[13]);
                 int changeType = Integer.parseInt(fields[14]);
                 int oldValue = Integer.parseInt(fields[15]);
-                System.out.println(fields[18]);
+//                System.out.println(fields[18]);
                 int newValue = Integer.parseInt(fields[16]);
                 int realChangeValue = Integer.parseInt(fields[17]);
                 int mainReason = Integer.parseInt(fields[19]);

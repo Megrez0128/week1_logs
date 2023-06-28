@@ -41,8 +41,50 @@ public class LogAnalyzer {
     }
 
     //TODO:
-    public Map<String,Map<String,Map<String,Map<String,String>>>> summarizeByServerUserCharReason(List<Log> logs) {
+    public Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> summarizeByServerUserCharReason(List<Log> logs) {
         //统计出区服->用户->角色->LogReason的总消耗额度和总增加额度信息
-        return null;
+        Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary = new HashMap<>();
+        for(Log log : logs) {
+            if(!serverUserCharReasonSummary.containsKey(log.getGameSvrId())) {
+                serverUserCharReasonSummary.put(log.getGameSvrId(),new HashMap<>());
+            }
+            if(!serverUserCharReasonSummary.get(log.getGameSvrId()).containsKey(log.getvUserID())) {
+                serverUserCharReasonSummary.get(log.getGameSvrId()).put(log.getvUserID(),new HashMap<>());
+            }
+            if(!serverUserCharReasonSummary.get(log.getGameSvrId()).get(log.getvUserID()).containsKey(log.getvRoleID())) {
+                serverUserCharReasonSummary.get(log.getGameSvrId()).get(log.getvUserID()).put(log.getvRoleID(),new HashMap<>());
+            }
+            if(!serverUserCharReasonSummary.get(log.getGameSvrId()).get(log.getvUserID()).get(log.getvRoleID()).containsKey(log.getMainReason())) {
+                Map<String,String> map = new HashMap<>();
+                map.put("总增加额度","0");
+                map.put("总消耗额度","0");
+                serverUserCharReasonSummary.get(log.getGameSvrId()).get(log.getvUserID()).get(log.getvRoleID()).put(log.getMainReason(),map);
+            }
+            Map<String,String> map = serverUserCharReasonSummary.get(log.getGameSvrId()).get(log.getvUserID()).get(log.getvRoleID()).get(log.getMainReason());
+            if(log.getChangeType() == 1) {
+                map.put("总增加额度",String.valueOf(Integer.parseInt(map.get("总增加额度")) + log.getChangeValue()));
+            }else if(log.getChangeType() == 2) {
+                map.put("总消耗额度",String.valueOf(Integer.parseInt(map.get("总消耗额度")) + log.getChangeValue()));
+            }
+        }
+        return serverUserCharReasonSummary;
+    }
+
+    public String query(Map<String, Map<String, Map<String, Map<Integer, Map<String, String>>>>> serverUserCharReasonSummary, String gameSvrId, String vUserID, String vRoleID, Integer mainReason) {
+        //TODO: 查询区服->用户->角色->LogReason的总消耗额度和总增加额度信息
+        if(!serverUserCharReasonSummary.containsKey(gameSvrId)) {
+            return "区服不存在";
+        }
+        if(!serverUserCharReasonSummary.get(gameSvrId).containsKey(vUserID)) {
+            return "用户不存在";
+        }
+        if(!serverUserCharReasonSummary.get(gameSvrId).get(vUserID).containsKey(vRoleID)) {
+            return "角色不存在";
+        }
+        if(!serverUserCharReasonSummary.get(gameSvrId).get(vUserID).get(vRoleID).containsKey(mainReason)) {
+            return "原因不存在";
+        }
+        Map<String,String> map = serverUserCharReasonSummary.get(gameSvrId).get(vUserID).get(vRoleID).get(mainReason);
+        return "总增加额度:" + map.get("总增加额度") + "  总消耗额度:" + map.get("总消耗额度");
     }
 }
