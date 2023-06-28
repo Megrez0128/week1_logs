@@ -1,26 +1,27 @@
+package org.example;
 import java.time.LocalDateTime;
 
 public class Log {
-    private String gameSvrId;   //登录的游戏服务器编号
+    private String gameSvrId;   //TODO:登录的游戏服务器编号
     private LocalDateTime dtEventTime;   //游戏事件的时间
     private String vGameAppid;  //游戏APPID
     private int platID; //ios 0/android 1
     private int iZoneAreaID;    //注册服ID，分区服场景使用。其他场景时填写0
     private int tempSvrId;  //临时服务器编号。非临时服期间填写0
     private String vOpenID; //用户OPENID号
-    private String vUserID; //用户ID
-    private String vRoleID; //玩家角色ID
+    private String vUserID; //TODO:用户ID
+    private String vRoleID; //TODO:玩家角色ID
     private int iLevel; //等级
     private int iVipLevel;  //VIP等级
 
     private int currencyType;   //货币类型
-    private int changeValue;    //修改值
-    private int changeType; //CurrencyChangeType
+    private int changeValue;    //TODO:修改值 
+    private int changeType; //TODO:CurrencyChangeType {1:增加, 2:减少}
     private int oldValue;   //旧值
-    private int newValue;   //新值
+    private int newValue;   //新值 newValue = oldValue + changeValue * (changeType == 1 ? 1 : -1)
     // <entry name="reasons" type="string" size="256" desc="变化原因(废弃)"/>
-    private int realChangeValue;    //实际变化值
-    private int mainReason; //MainReason
+    private int realChangeValue;    //实际变化值 realChangeValue = changeValue * (changeType == 1 ? 1 : -1)
+    private int mainReason; //TODO:货币修改主原因
     private long subReason; //SubReason
     private int reason2;    //道具流动一级原因2
     private long subReason2;    //道具流动二级原因2
@@ -62,14 +63,17 @@ public class Log {
         this.subReason5 = subReason5;
         this.sequence = sequence;
     }
-    //重写toString方法，方便打印日志
-    //todo:之后再按要求的格式输出
+    //重写toString方法，方便打印日志    
     @Override
     public String toString(){
         return String.format("gameSvrId:%s,dtEventTime:%s,vGameAppid:%s,platID:%d,iZoneAreaID:%d,tempSvrId:%d,vOpenID:%s,vUserID:%s,vRoleID:%s,iLevel:%d,iVipLevel:%d,currencyType:%d,changeValue:%d,changeType:%d,oldValue:%d,newValue:%d,realChangeValue:%d,mainReason:%d,subReason:%d,reason2:%d,subReason2:%d,reason3:%d,subReason3:%d,reason4:%d,subReason4:%d,reason5:%d,subReason5:%d,sequence:%d",
         gameSvrId,dtEventTime,vGameAppid,platID,iZoneAreaID,tempSvrId,vOpenID,vUserID,vRoleID,iLevel,iVipLevel,currencyType,changeValue,changeType,oldValue,newValue,realChangeValue,mainReason,subReason,reason2,subReason2,reason3,subReason3,reason4,subReason4,reason5,subReason5,sequence);
     }
-
+    //TODO:之后再按要求的格式输出
+    public String toTLOG(){
+        return String.format("Currency|gameSvrId:%s|dtEventTime:%s|vGameAppid:%s|platID:%d|iZoneAreaID:%d|tempSvrId:%d|vOpenID:%s|vUserID:%s|vRoleID:%s|iLevel:%d|iVipLevel:%d|currencyType:%d|changeValue:%d|changeType:%d|oldValue:%d|newValue:%d|realChangeValue:%d|mainReason:%d|subReason:%d|reason2:%d|subReason2:%d|reason3:%d|subReason3:%d|reason4:%d|subReason4:%d|reason5:%d|subReason5:%d|sequence:%d",
+        gameSvrId,dtEventTime,vGameAppid,platID,iZoneAreaID,tempSvrId,vOpenID,vUserID,vRoleID,iLevel,iVipLevel,currencyType,changeValue,changeType,oldValue,newValue,realChangeValue,mainReason,subReason,reason2,subReason2,reason3,subReason3,reason4,subReason4,reason5,subReason5,sequence);
+    }
     public String getGameSvrId() {
         return gameSvrId;
     }

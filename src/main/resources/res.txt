@@ -1,0 +1,5 @@
+登录的游戏服务器编号 GameSvrId:2930
+用户ID vUserID:zhangheyang003$shadow@2930
+玩家角色ID vRoleID:8366962
+-总增加额度 1000000
+-总消耗额度 0

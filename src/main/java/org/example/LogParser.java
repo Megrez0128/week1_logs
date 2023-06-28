@@ -1,9 +1,13 @@
+package org.example;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
 // Log:
     //29个属性，第18个属性reasons是废弃的
     // private String gameSvrId;   //登录的游戏服务器编号
@@ -17,8 +21,6 @@ import java.time.LocalDateTime;
     // private String vRoleID; //玩家角色ID
     // private int iLevel; //等级
     // private int iVipLevel;  //VIP等级
-import java.time.format.DateTimeFormatter;
-
     // private int currencyType;   //货币类型
     // private int changeValue;    //修改值
     // private int changeType; //CurrencyChangeType
@@ -37,6 +39,7 @@ import java.time.format.DateTimeFormatter;
     // private int reason5;    //道具流动一级原因5
     // private long subReason5;    //道具流动二级原因5
     // private long sequence;  //操作序列号，用于关联一次购买产生多条不同类型的货币日志
+
 public class LogParser {
     public List<Log> parse(String logFile) {
         List<Log> logs = new ArrayList<>();
@@ -82,8 +85,6 @@ public class LogParser {
 
                 Log log = new Log(gameSvrId,dtEventTime,vGameAppid,platID,iZoneAreaID,tempSvrId,vOpenID,vUserID,vRoleID,iLevel,iVipLevel,currencyType,changeValue,changeType,oldValue,newValue,realChangeValue,mainReason,subReason,reason2,subReason2,reason3,subReason3,reason4,subReason4,reason5,subReason5,sequence);
                 logs.add(log);
-
-                
             }
         } catch (IOException e) {
             e.printStackTrace();
