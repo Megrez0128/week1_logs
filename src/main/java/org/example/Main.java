@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class Main {
     public static String addressPrefix = "E:\\CodeStorage\\Github\\week1_logs\\src\\main\\resources\\";
+    // TODO: 目前设置的是电脑本地绝对路径，可以改成相对路径
     public static void main(String[] args) throws IOException {
         CommandLine cmd = parseArgs(args);
         if (cmd == null) {
