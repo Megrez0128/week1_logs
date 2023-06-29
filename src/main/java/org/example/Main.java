@@ -12,18 +12,16 @@ import java.util.Map;
 public class Main {
     public static String addressPrefix = "E:\\CodeStorage\\Github\\week1_logs\\src\\main\\resources\\data\\";
     static ListFilesInFolder listFilesInFolder = new ListFilesInFolder(addressPrefix);
+    static LogAnalyzer analyzer = new LogAnalyzer();
+    static LogParser parser = new LogParser();
     // TODO: 目前设置的是电脑本地绝对路径，可以改成相对路径
     public static void main(String[] args) throws IOException {
         CommandLine cmd = parseArgs(args);
         if (cmd == null) {
             return;
         }
-        //打印命令行参数
         boolean secondFunc = cmd.hasOption("m");
         String logFilePath = cmd.getOptionValue("l");
-
-        LogParser parser = new LogParser();
-
         List<Log> logs = new ArrayList<>();
 
         //遍历listFilesInFolder
@@ -32,11 +30,8 @@ public class Main {
             logs.addAll(parser.parse(addressPrefix + file));
         }
 
-        LogAnalyzer analyzer = new LogAnalyzer();
-
         if (secondFunc) {
             Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary = analyzer.summarizeByServerUserCharReason(logs);
-            // 输出到文件或控制台...
             //将serverUserCharReasonSummary输出到res.txt
             outputToFileWithReason(serverUserCharReasonSummary);
             //将serverUserCharReasonSummary输出到控制台
@@ -50,13 +45,7 @@ public class Main {
             //g,u,r,m唯一确定一条记录
             String result = analyzer.query(serverUserCharReasonSummary,gameSvrId,vUserID,vRoleID,mainReason);
             //将查询结果输出到控制台
-            System.out.println("查询结果：");
-            System.out.println("登录的游戏服务器编号 GameSvrId:" + gameSvrId);
-            System.out.println("\t用户ID vUserID:" + vUserID);
-            System.out.println("\t\t玩家角色ID vRoleID:" + vRoleID);
-            System.out.println("\t\t\t主要原因 MainReason:" + mainReason);
-            System.out.println("\t\t\t" + result);
-            
+            outputQueryResult(gameSvrId, vUserID, vRoleID, mainReason, result);            
         } else {
             Map<String,Map<String, Map<String,Map<String,String>>>> serverUserCharSummary = analyzer.summarizeByServerUserChar(logs);
             // 输出到文件或控制台...
@@ -66,6 +55,15 @@ public class Main {
         }
 
         parser.printCounter();
+    }
+
+    private static void outputQueryResult(String gameSvrId, String vUserID, String vRoleID, Integer mainReason, String result) {
+        System.out.println("查询结果：");
+        System.out.println(String.format("登录的游戏服务器编号 GameSvrId: %s", gameSvrId));
+        System.out.println(String.format("\t用户ID vUserID: %s", vUserID));
+        System.out.println(String.format("\t\t玩家角色ID vRoleID: %s", vRoleID));
+        System.out.println(String.format("\t\t\t主要原因 MainReason: %d", mainReason));
+        System.out.println(String.format("\t\t\t%s", result));
     }
 
     public static void outputToFile(Map<String, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
