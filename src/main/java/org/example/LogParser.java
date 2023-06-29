@@ -1,11 +1,13 @@
 package org.example;
-import java.io.BufferedReader;
-import java.io.FileReader;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 
  /*Log:
@@ -48,62 +50,59 @@ public class LogParser {
         System.out.println("currencyCounter:"  + currencyCounter);
         System.out.println("totalCounter:"  + totalCounter);
     }
-    public List<Log> parse(String logFile) {
-        List<Log> logs = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(logFile))) {
-            String line;
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            while ((line = reader.readLine()) != null) {
-                totalCounter++;
-                String[] fields = line.split("\\|");
-                if (fields.length != 30) {
-                    continue;
-                }
-                
-                //以空格为分隔符，将field[0]分割成字符串数组，然后判断数组中最后一个不是"Currency"，则跳过这一行
-                String[] str = fields[0].split(" ");
-                if (!str[str.length - 1].equals("Currency")) {
-                    continue;
-                }
-                currencyCounter++;
-
-                String gameSvrId = fields[1];
-                
-                LocalDateTime dtEventTime = LocalDateTime.parse(fields[2], formatter);
-                String vGameAppid = fields[3];
-                int platID = Integer.parseInt(fields[4]);
-                int iZoneAreaID = Integer.parseInt(fields[5]);
-                int tempSvrId = Integer.parseInt(fields[6]);
-                String vOpenID = fields[7];
-                String vUserID = fields[8];
-                String vRoleID = fields[9];
-                int iLevel = Integer.parseInt(fields[10]);
-                int iVipLevel = Integer.parseInt(fields[11]);
-                int currencyType = Integer.parseInt(fields[12]);
-                int changeValue = Integer.parseInt(fields[13]);
-                int changeType = Integer.parseInt(fields[14]);
-                int oldValue = Integer.parseInt(fields[15]);
-                int newValue = Integer.parseInt(fields[16]);
-                int realChangeValue = Integer.parseInt(fields[17]);
-                int mainReason = Integer.parseInt(fields[19]);
-                long subReason = Long.parseLong(fields[20]);
-                int reason2 = Integer.parseInt(fields[21]);
-                long subReason2 = Long.parseLong(fields[22]);
-                int reason3 = Integer.parseInt(fields[23]);
-                long subReason3 = Long.parseLong(fields[24]);
-                int reason4 = Integer.parseInt(fields[25]);
-                long subReason4 = Long.parseLong(fields[26]);
-                int reason5 = Integer.parseInt(fields[27]);
-                long subReason5 = Long.parseLong(fields[28]);
-                long sequence = Long.parseLong(fields[29]);
-
-                Log log = new Log(gameSvrId, dtEventTime, vGameAppid, platID, iZoneAreaID, tempSvrId, vOpenID, vUserID, vRoleID, iLevel, iVipLevel, currencyType, changeValue, changeType,
-                        oldValue, newValue, realChangeValue, mainReason, subReason, reason2, subReason2, reason3, subReason3, reason4, subReason4, reason5, subReason5, sequence);
-                logs.add(log);
+public List<Log> parse(String logFile) {
+    List<Log> logs = new ArrayList<>();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    try (Stream<String> lines = Files.lines(Paths.get(logFile))) {
+        lines.forEach(line -> {
+            totalCounter++;
+            String[] fields = line.split("\\|");
+            if (fields.length != 30) {
+                return;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return logs;
+
+            //以空格为分隔符，将field[0]分割成字符串数组，然后判断数组中最后一个不是"Currency"，则跳过这一行
+            String[] str = fields[0].split(" ");
+            if (!str[str.length - 1].equals("Currency")) {
+                return;
+            }
+            currencyCounter++;
+
+            Log log = new Log(
+                fields[1],
+                LocalDateTime.parse(fields[2], formatter),
+                fields[3],
+                Integer.parseInt(fields[4]),
+                Integer.parseInt(fields[5]),
+                Integer.parseInt(fields[6]),
+                fields[7],
+                fields[8],
+                fields[9],
+                Integer.parseInt(fields[10]),
+                Integer.parseInt(fields[11]),
+                Integer.parseInt(fields[12]),
+                Integer.parseInt(fields[13]),
+                Integer.parseInt(fields[14]),
+                Integer.parseInt(fields[15]),
+                Integer.parseInt(fields[16]),
+                Integer.parseInt(fields[17]),
+                Integer.parseInt(fields[19]),
+                Long.parseLong(fields[20]),
+                Integer.parseInt(fields[21]),
+                Long.parseLong(fields[22]),
+                Integer.parseInt(fields[23]),
+                Long.parseLong(fields[24]),
+                Integer.parseInt(fields[25]),
+                Long.parseLong(fields[26]),
+                Integer.parseInt(fields[27]),
+                Long.parseLong(fields[28]),
+                Long.parseLong(fields[29])
+            );
+            logs.add(log);
+        });
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+    return logs;
+}
 }

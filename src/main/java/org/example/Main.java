@@ -40,7 +40,7 @@ public class Main {
             //将serverUserCharReasonSummary输出到res.txt
             outputToFileWithReason(serverUserCharReasonSummary);
             //将serverUserCharReasonSummary输出到控制台
-//            outputToConsoleWithReason(serverUserCharReasonSummary);
+            //outputToConsoleWithReason(serverUserCharReasonSummary);
 
             String gameSvrId = cmd.getOptionValue("g");
             String vUserID = cmd.getOptionValue("u");
@@ -86,7 +86,7 @@ public class Main {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException  e) {
             throw new MainException(e);
         }
     }
@@ -114,10 +114,9 @@ public class Main {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException  e) {
             throw new MainException(e);
         }
-
     }
 
     private static void outputToConsole(Map<String, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
