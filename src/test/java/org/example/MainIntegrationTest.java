@@ -14,7 +14,7 @@ public class MainIntegrationTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        String[] args = {"-l", Main.addressPrefix + "currency_flow.txt"};
+        String[] args = {"-l", "E:\\CodeStorage\\Github\\week1_logs\\src\\main\\resources\\currency_flow.txt"};
         Main.main(args);
 
         String expectedOutput = "登录的游戏服务器编号 GameSvrId:2931\r\n" +
@@ -42,7 +42,9 @@ public class MainIntegrationTest {
                 "\t用户ID vUserID:zhangheyang003$shadow@2930\r\n" +
                 "\t\t玩家角色ID vRoleID:8366962\r\n" +
                 "\t\t-总增加额度: 2000000\r\n" +
-                "\t\t-总消耗额度: 0\r\n" ;
+                "\t\t-总消耗额度: 0\r\n" +
+                "currencyCounter:8\r\n" +
+                "totalCounter:8\r\n";
 
         Assertions.assertEquals(expectedOutput, outContent.toString(String.valueOf(StandardCharsets.UTF_8)));
     }

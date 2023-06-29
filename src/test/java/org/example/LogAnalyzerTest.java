@@ -11,7 +11,7 @@ public class LogAnalyzerTest {
     @Test
     public void testSummarizeByServerUserChar() throws IOException {
         LogParser parser = new LogParser();
-        List<Log> logs = parser.parse(Main.addressPrefix + "currency_flow.txt");
+        List<Log> logs = parser.parse("E:\\CodeStorage\\Github\\week1_logs\\src\\main\\resources\\currency_flow.txt");
 
         LogAnalyzer analyzer = new LogAnalyzer();
         Map<String,Map<String, Map<String,Map<String,String>>>> serverUserCharSummary = analyzer.summarizeByServerUserChar(logs);
@@ -24,7 +24,7 @@ public class LogAnalyzerTest {
     @Test
     public void testSummarizeByServerUserCharReason() throws IOException {
         LogParser parser = new LogParser();
-        List<Log> logs = parser.parse(Main.addressPrefix + "currency_flow.txt");
+        List<Log> logs = parser.parse("E:\\CodeStorage\\Github\\week1_logs\\src\\main\\resources\\currency_flow.txt");
 
         LogAnalyzer analyzer = new LogAnalyzer();
         Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary = analyzer.summarizeByServerUserCharReason(logs);
@@ -37,7 +37,7 @@ public class LogAnalyzerTest {
     @Test
     public void testQuery() throws IOException {
         LogParser parser = new LogParser();
-        List<Log> logs = parser.parse(Main.addressPrefix + "currency_flow.txt");
+        List<Log> logs = parser.parse("E:\\CodeStorage\\Github\\week1_logs\\src\\main\\resources\\currency_flow.txt");
 
         LogAnalyzer analyzer = new LogAnalyzer();
         Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary = analyzer.summarizeByServerUserCharReason(logs);

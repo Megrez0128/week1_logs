@@ -24,10 +24,14 @@ public class Main {
         String logFilePath = cmd.getOptionValue("l");
         List<Log> logs = new ArrayList<>();
 
-        //遍历listFilesInFolder
-        for (String file : listFilesInFolder.getFileNameList()) {
-            //解析文件
-            logs.addAll(parser.parse(addressPrefix + file));
+        if (logFilePath != null) {
+            // 读取指定的文件
+            logs.addAll(parser.parse(logFilePath));
+        } else {
+            // 遍历目标文件夹下的所有文件
+            for (String file : listFilesInFolder.getFileNameList()) {
+                logs.addAll(parser.parse(addressPrefix + file));
+            }
         }
 
         if (secondFunc) {
