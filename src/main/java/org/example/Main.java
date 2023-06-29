@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.example.ParseArgs.parseArgs;
-
-public class Main implements ResultOutput {
+public class Main {
     // 设置为相对路径
     public static String addressPrefix = "src/main/resources/data/";
     static ListFilesInFolder listFilesInFolder = new ListFilesInFolder(addressPrefix);
@@ -16,7 +14,7 @@ public class Main implements ResultOutput {
     static LogParser parser = new LogParser();
 
     public static void main(String[] args) {
-        CommandLine cmd = parseArgs(args);
+        CommandLine cmd = ParseArgs.parseArgs(args);
         if (cmd == null) {
             return;
         }

@@ -3,8 +3,6 @@ package org.example;
 import org.apache.commons.cli.*;
 
 public class ParseArgs {
-
-
     public static CommandLine parseArgs(String[] args) {
         Options options = new Options();
         Option logFileOption = new Option("l", "logFilePath", true, "Path of log file");
