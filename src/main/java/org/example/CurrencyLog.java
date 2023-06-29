@@ -1,13 +1,13 @@
 package org.example;
 import java.time.LocalDateTime;
 
-public class Log {
-    private String gameSvrId;   //TODO:登录的游戏服务器编号
+public class CurrencyLog {
+    private String gameSvrId;
     private LocalDateTime dtEventTime;   //游戏事件的时间
     private String vGameAppid;  //游戏APPID
     private int platID; //ios 0/android 1
     private int iZoneAreaID;    //注册服ID，分区服场景使用。其他场景时填写0
-    private int tempSvrId;  //临时服务器编号。非临时服期间填写0
+    private int tempSvrId;  //临时服务器编号。非临时服期间填写0 TODO
     private String vOpenID; //用户OPENID号
     private String vUserID; //TODO:用户ID
     private String vRoleID; //TODO:玩家角色ID
@@ -33,7 +33,7 @@ public class Log {
     private long subReason5;    //道具流动二级原因5
     private long sequence;  //操作序列号，用于关联一次购买产生多条不同类型的货币日志
 
-    public Log(String gameSvrId, LocalDateTime dtEventTime, String vGameAppid, int platID, int iZoneAreaID, int tempSvrId, String vOpenID, String vUserID, String vRoleID, int iLevel, int iVipLevel, int currencyType, int changeValue, int changeType, int oldValue, int newValue, int realChangeValue, int mainReason, long subReason, int reason2, long subReason2, int reason3, long subReason3, int reason4, long subReason4, int reason5, long subReason5, long sequence) {
+    public CurrencyLog(String gameSvrId, LocalDateTime dtEventTime, String vGameAppid, int platID, int iZoneAreaID, int tempSvrId, String vOpenID, String vUserID, String vRoleID, int iLevel, int iVipLevel, int currencyType, int changeValue, int changeType, int oldValue, int newValue, int realChangeValue, int mainReason, long subReason, int reason2, long subReason2, int reason3, long subReason3, int reason4, long subReason4, int reason5, long subReason5, long sequence) {
         this.gameSvrId = gameSvrId;
         this.dtEventTime = dtEventTime;
         this.vGameAppid = vGameAppid;

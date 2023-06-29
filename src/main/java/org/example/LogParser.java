@@ -50,8 +50,8 @@ public class LogParser {
         System.out.println("currency类出现的次数currencyCounter: "  + currencyCounter);
         System.out.println("总的日志记录数totalCounter: "  + totalCounter);
     }
-public List<Log> parse(String logFile) {
-    List<Log> logs = new ArrayList<>();
+public List<CurrencyLog> parse(String logFile) {
+    List<CurrencyLog> currencyLogs = new ArrayList<>();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     try (Stream<String> lines = Files.lines(Paths.get(logFile))) {
         lines.forEach(line -> {
@@ -68,7 +68,7 @@ public List<Log> parse(String logFile) {
             }
             currencyCounter++;
 
-            Log log = new Log(
+            CurrencyLog currencyLog = new CurrencyLog(
                 fields[1],
                 LocalDateTime.parse(fields[2], formatter),
                 fields[3],
@@ -98,11 +98,11 @@ public List<Log> parse(String logFile) {
                 Long.parseLong(fields[28]),
                 Long.parseLong(fields[29])
             );
-            logs.add(log);
+            currencyLogs.add(currencyLog);
         });
     } catch (IOException e) {
         e.printStackTrace();
     }
-    return logs;
+    return currencyLogs;
 }
 }
