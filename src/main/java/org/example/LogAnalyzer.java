@@ -37,7 +37,7 @@ public class LogAnalyzer {
         return serverUserCharSummary;
     }
 
-    //TODO:
+    //TODO:将此处的中文删除；可以用单个变量进行函数get的替换，不需要每次调用函数获取
     public Map<Integer,Map<String, Map<String,Map<Integer,Map<String,String>>>>> summarizeByServerUserCharReason(List<CurrencyLog> currencyLogs) {
         //统计出区服->用户->角色->LogReason的总消耗额度和总增加额度信息
         Map<Integer,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary = new HashMap<>();
@@ -67,6 +67,7 @@ public class LogAnalyzer {
         return serverUserCharReasonSummary;
     }
 
+    //TODO：优化判断，不建议每次都调用函数，可以存一个变量
     public String query(Map<Integer, Map<String, Map<String, Map<Integer, Map<String, String>>>>> serverUserCharReasonSummary, Integer tmpSvrId, String vUserID, String vRoleID, Integer mainReason) {
 
         if(!serverUserCharReasonSummary.containsKey(tmpSvrId)) {

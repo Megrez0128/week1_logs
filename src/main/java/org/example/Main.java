@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// TODO:注意较重要的注释按照标准规范写成如下格式
+/*
+Main函数
+尽量不要出现汉字（改控制台print）
+Exception或者报错信息：最好能够返回更具体的出错情况context
+ */
 public class Main {
     // 设置为相对路径
     public static String addressPrefix = "src/main/resources/data/";

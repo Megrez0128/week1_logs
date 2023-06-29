@@ -68,6 +68,7 @@ public List<CurrencyLog> parse(String logFile) {
             }
             currencyCounter++;
 
+            // TODO:传参太多没必要，有一些混乱
             CurrencyLog currencyLog = new CurrencyLog(
                 fields[1],
                 LocalDateTime.parse(fields[2], formatter),
