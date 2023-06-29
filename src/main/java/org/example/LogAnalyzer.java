@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 public class LogAnalyzer {
-    public void analyze(List<CurrencyLog> currencyLogs) {
-        // TODO: 分析日志信息，例如统计游戏操作次数、计算玩家游戏时长等
-    }
 
     public Map<Integer,Map<String, Map<String,Map<String,String>>>> summarizeByServerUserChar(List<CurrencyLog> currencyLogs) {
         //统计出区服->用户->角色->的总消耗额度和总增加额度信息
@@ -71,7 +68,7 @@ public class LogAnalyzer {
     }
 
     public String query(Map<Integer, Map<String, Map<String, Map<Integer, Map<String, String>>>>> serverUserCharReasonSummary, Integer tmpSvrId, String vUserID, String vRoleID, Integer mainReason) {
-        //TODO: 查询区服->用户->角色->LogReason的总消耗额度和总增加额度信息
+
         if(!serverUserCharReasonSummary.containsKey(tmpSvrId)) {
             return "区服不存在";
         }

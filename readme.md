@@ -7,7 +7,7 @@
 该程序可以通过命令行参数进行配置。以下是可用的命令行参数：
 
 - `-l` 或 `--logFilePath`：指定日志文件的路径。该参数是必需的。
-- `-g` 或 `--gameSvrId`：指定游戏服务器的编号。
+- `-t` 或 `--iZoneAreaID`：指定（临时）游戏服务器的编号。
 - `-u` 或 `--vUserID`：指定用户ID。
 - `-r` 或 `--vRoleID`：指定玩家角色ID。
 - `-m` 或 `--mainReason`：指定日志的主要原因。
@@ -26,9 +26,9 @@
 
 * 要运行第二种功能，请使用以下命令：
 
-`java Main -l <logFilePath> -g <gameSvrId> -u <vUserID> -r <vRoleID> -m <mainReason>`
+`java Main -l <logFilePath> -i <iZoneAreaID> -u <vUserID> -r <vRoleID> -m <mainReason>`
 
-其中，`<logFilePath>` 是日志文件的路径，`<gameSvrId>`、`<vUserID>`、`<vRoleID>` 和 `<mainReason>` 是过滤条件。如果没有指定 -m 参数，则程序将运行第一种功能。
+其中，`<logFilePath>` 是日志文件的路径，`<iZoneAreaID>`、`<vUserID>`、`<vRoleID>` 和 `<mainReason>` 是过滤条件。如果没有指定 -m 参数，则程序将运行第一种功能。
 
 如果没有指定 -l 参数，则程序将默认读取 data 文件夹下的所有日志文件。
 
@@ -36,12 +36,13 @@
 
 程序的输出格式如下：
 
+
 ### 第一种功能
 
 程序将分析结果输出到控制台和文件中。输出格式如下：
 
 ```
-登录的游戏服务器编号 GameSvrId:<gameSvrId>
+注册的游戏服务器编号 iZoneAreaID:<iZoneAreaID>
 	用户ID vUserID:<vUserID>
 		玩家角色ID vRoleID:<vRoleID>
 		总增加额度: <count1>
@@ -49,14 +50,14 @@
 		...
 ```
 
-其中，`<gameSvrId>`、`<vUserID>` 和 `<vRoleID>` 分别是游戏服务器编号、用户ID和玩家角色ID。`<reason1>`、`<mainReason>` 等是额度改变的原因，`<count1>`、`<count2>` 等是总增加额度和总消耗额度。
+其中，`<iZoneAreaID>`、`<vUserID>` 和 `<vRoleID>` 分别是游戏服务器编号、用户ID和玩家角色ID。`<reason1>`、`<mainReason>` 等是额度改变的原因，`<count1>`、`<count2>` 等是总增加额度和总消耗额度。
 
 ### 第二种功能
 
 程序将过滤结果输出到控制台和文件中。输出格式如下：
 
 ```
-登录的游戏服务器编号 GameSvrId:<gameSvrId>
+注册的游戏服务器编号 iZoneAreaID:<iZoneAreaID>
 	用户ID vUserID:<vUserID>
 		玩家角色ID vRoleID:<vRoleID>
 				主要原因 MainReason:<mainReason>
@@ -65,7 +66,7 @@
                     ...
 ```
 
-其中，`<gameSvrId>`、`<vUserID>`、`<vRoleID>` 和 `<reason1>`、`<reason2>` 等的含义与第一种功能相同。
+其中，`<iZoneAreaID>`、`<vUserID>`、`<vRoleID>` 和 `<reason1>`、`<reason2>` 等的含义与第一种功能相同。
 
 ## 依赖项
 

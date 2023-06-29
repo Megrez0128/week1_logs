@@ -2,7 +2,6 @@ package org.example;
 
 import org.apache.commons.cli.*;
 
-import java.beans.Introspector;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,21 +40,27 @@ public class Main {
             //将serverUserCharReasonSummary输出到res.txt
             outputToFileWithReason(serverUserCharReasonSummary);
             //将serverUserCharReasonSummary输出到控制台
-            //outputToConsoleWithReason(serverUserCharReasonSummary);
 
-            Integer iZoneAreaID = Integer.valueOf(cmd.getOptionValue("i"));
-            String vUserID = cmd.getOptionValue("u");
-            String vRoleID = cmd.getOptionValue("r");
-            Integer mainReason = Integer.valueOf(cmd.getOptionValue("m"));
-            //查询,根据命令行参数查询
-            //g,u,r,m唯一确定一条记录
-            String result = analyzer.query(serverUserCharReasonSummary,iZoneAreaID,vUserID,vRoleID,mainReason);
-            //将查询结果输出到控制台
-            outputQueryResult(iZoneAreaID, vUserID, vRoleID, mainReason, result);
+            try {
+                if(cmd.getOptionValue("i")==null){
+                    System.out.println("请正确输入参数");
+                    return;
+                }
+                int iZoneAreaID = Integer.parseInt(cmd.getOptionValue("i"));
+                String vUserID = cmd.getOptionValue("u");
+                String vRoleID = cmd.getOptionValue("r");
+                Integer mainReason = Integer.valueOf(cmd.getOptionValue("m"));
+                //查询,根据命令行参数查询
+                //g,u,r,m唯一确定一条记录
+                String result = analyzer.query(serverUserCharReasonSummary, iZoneAreaID, vUserID, vRoleID, mainReason);
+                //将查询结果输出到控制台
+                outputQueryResult(iZoneAreaID, vUserID, vRoleID, mainReason, result);
+            }catch (Exception e){
+                throw new MainException(e);
+            }
         } else {
             Map<Integer,Map<String, Map<String,Map<String,String>>>> serverUserCharSummary = analyzer.summarizeByServerUserChar(currencyLogs);
-            // 输出到文件或控制台...
-            //将serverUserCharSummary输出到res.txt
+            //将serverUserCharSummary输出到文件和控制台
             outputToFile(serverUserCharSummary);
             outputToConsole(serverUserCharSummary);
         }
@@ -72,21 +77,24 @@ public class Main {
         System.out.printf("\t\t\t%s%n", result);
     }
 
+    //将serverUserCharReasonSummary以日志形式输出到文件
     public static void outputToFile(Map<Integer, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(addressPrefix +"output.1"))) {
+            String iZoneAreaID = "";
+            String userId = "";
+            String roleId = "";
             for (Map.Entry<Integer, Map<String, Map<String, Map<String, String>>>> entry : serverUserCharSummary.entrySet()) {
-                writer.write("注册的游戏服务器编号 iZoneAreaID:" + entry.getKey());
-                writer.newLine();
+                iZoneAreaID = String.valueOf(entry.getKey());
                 for (Map.Entry<String, Map<String, Map<String, String>>> entry1 : entry.getValue().entrySet()) {
-                    writer.write("\t用户ID vUserID:" + entry1.getKey());
-                    writer.newLine();
+                    userId = entry1.getKey();
                     for (Map.Entry<String, Map<String, String>> entry2 : entry1.getValue().entrySet()) {
-                        writer.write("\t\t玩家角色ID vRoleID:" + entry2.getKey());
-                        writer.newLine();
+                        roleId = entry2.getKey();
+                        StringBuilder str = new StringBuilder();
                         for (Map.Entry<String, String> entry3 : entry2.getValue().entrySet()) {
-                            writer.write("\t\t-" + entry3.getKey() + " " + entry3.getValue());
-                            writer.newLine();
+                            str.append("|").append(entry3.getValue());
                         }
+                        writer.write("Currency|" + iZoneAreaID + "|" +userId +"|" + roleId + str );
+                        writer.newLine();
                     }
                 }
             }
@@ -96,24 +104,25 @@ public class Main {
     }
 
     public static void outputToFileWithReason(Map<Integer,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary) {
-        //将serverUserCharReasonSummary输出到res.txt
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(addressPrefix +"res.txt"))) {
+            String iZoneAreaID = "";
+            String userId = "";
+            String roleId = "";
+            String mainReason = "";
             for(Map.Entry<Integer,Map<String, Map<String,Map<Integer,Map<String,String>>>>> entry : serverUserCharReasonSummary.entrySet()){
-                writer.write("注册的游戏服务器编号 iZoneAreaID:" + entry.getKey());
-                writer.newLine();
+                iZoneAreaID = String.valueOf(entry.getKey());
                 for(Map.Entry<String, Map<String,Map<Integer,Map<String,String>>>> entry1 : entry.getValue().entrySet()){
-                    writer.write("\t用户ID vUserID:" + entry1.getKey());
-                    writer.newLine();
+                    userId = entry1.getKey();
                     for(Map.Entry<String,Map<Integer,Map<String,String>>> entry2 : entry1.getValue().entrySet()){
-                        writer.write("\t\t玩家角色ID vRoleID:" + entry2.getKey());
-                        writer.newLine();
+                        roleId = entry2.getKey();
                         for(Map.Entry<Integer,Map<String,String>> entry3 : entry2.getValue().entrySet()){
-                            writer.write("\t\t\t主要原因 MainReason:" + entry3.getKey());
-                            writer.newLine();
-                            for(Map.Entry<String,String> entry4 : entry3.getValue().entrySet()){
-                                writer.write("\t\t\t-" + entry4.getKey() + ": " + entry4.getValue());
-                                writer.newLine();
+                            mainReason = String.valueOf(entry3.getKey());
+                            StringBuilder str = new StringBuilder();
+                            for (Map.Entry<String, String> entry4 : entry3.getValue().entrySet()) {
+                                str.append("|").append(entry4.getValue());
                             }
+                            writer.write("Currency|" + iZoneAreaID + "|" +userId +"|" + roleId + str + "|" + mainReason);
+                            writer.newLine();
                         }
                     }
                 }
@@ -143,7 +152,6 @@ public class Main {
     private static CommandLine parseArgs(String[] args) {
         Options options = new Options();
         Option logFileOption = new Option("l", "logFilePath", true, "Path of log file");
-        //logFileOption.setRequired(true);
         options.addOption(logFileOption);
         Option gameSvrIdOption = new Option("i", "iZoneAreaID", true, "Game server ID");
         options.addOption(gameSvrIdOption);
