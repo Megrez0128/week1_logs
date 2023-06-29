@@ -6,8 +6,8 @@
 
 该程序可以通过命令行参数进行配置。以下是可用的命令行参数：
 
-- `-l` 或 `--logFilePath`：指定日志文件的路径。该参数是必需的。
-- `-t` 或 `--iZoneAreaID`：指定（临时）游戏服务器的编号。
+- `-l` 或 `--logFilePath`：指定日志文件的路径。
+- `-i` 或 `--iZoneAreaID`：指定（临时）游戏服务器的编号。
 - `-u` 或 `--vUserID`：指定用户ID。
 - `-r` 或 `--vRoleID`：指定玩家角色ID。
 - `-m` 或 `--mainReason`：指定日志的主要原因。
@@ -36,37 +36,39 @@
 
 程序的输出格式如下：
 
-
 ### 第一种功能
 
-程序将分析结果输出到控制台和文件中。输出格式如下：
+**程序将分析结果输出到控制台和文件中。输出格式如下：**
 
-```
-注册的游戏服务器编号 iZoneAreaID:<iZoneAreaID>
-	用户ID vUserID:<vUserID>
-		玩家角色ID vRoleID:<vRoleID>
-		总增加额度: <count1>
-		总消耗额度: <count2>
-		...
+```xml
+<struct name="CurrencyStatistics" version="1" desc="(必填)区服->用户->角色货币流水统计" type="2">
+    <entry name="iZoneAreaID" type="int" index="1" defaultvalue="0" desc="(必填)注册服ID，分区服场景使用。其他场景时填写0"/>
+    <entry name="vUserID" type="string" size="128" desc="(必填)用户ID"/>
+    <entry name="vRoleID" type="string" size="64" defaultvalue="NULL" desc="(必填)玩家角色ID"/>
+    <entry name="totalConsumptionValue" type="int" desc="总消耗值"/>
+    <entry name="totalAddedValue" type="int" desc="总增加值"/>
+</struct>
+...
 ```
 
-其中，`<iZoneAreaID>`、`<vUserID>` 和 `<vRoleID>` 分别是游戏服务器编号、用户ID和玩家角色ID。`<reason1>`、`<mainReason>` 等是额度改变的原因，`<count1>`、`<count2>` 等是总增加额度和总消耗额度。
+**其中，**`<iZoneAreaID>`、`<vUserID>` 和 `<vRoleID>` 分别是(注册)游戏服务器编号、用户ID和玩家角色ID。`<totalAddedValue>`、`<totalConsumptionValue>` 等是总增加额度和总消耗额度。
 
 ### 第二种功能
 
-程序将过滤结果输出到控制台和文件中。输出格式如下：
+**程序将过滤结果输出到控制台和文件中。输出格式如下：**
 
-```
-注册的游戏服务器编号 iZoneAreaID:<iZoneAreaID>
-	用户ID vUserID:<vUserID>
-		玩家角色ID vRoleID:<vRoleID>
-				主要原因 MainReason:<mainReason>
-					总增加额度: <count1>
-					总消耗额度: <count2>
-                    ...
+```xml
+    <struct name="CurrencyStatisticsWithReason" version="1" desc="(必填)区服->用户->角色->LogReason货币流水统计" type="2">
+        <entry name="iZoneAreaID" type="int" index="1" defaultvalue="0" desc="(必填)注册服ID，分区服场景使用。其他场景时填写0"/>
+        <entry name="vUserID" type="string" size="128" desc="(必填)用户ID"/>
+        <entry name="vRoleID" type="string" size="64" defaultvalue="NULL" desc="(必填)玩家角色ID"/>
+        <entry name="totalConsumptionValue" type="int" desc="总消耗值"/>
+        <entry name="totalAddedValue" type="int" desc="总增加值"/>
+        <entry name="mainReason" type="int" desc="MainReason"/>
+    </struct>
 ```
 
-其中，`<iZoneAreaID>`、`<vUserID>`、`<vRoleID>` 和 `<reason1>`、`<reason2>` 等的含义与第一种功能相同。
+**其中，**`<iZoneAreaID>`、`<vUserID>`、`<vRoleID>` 等的含义与第一种功能相同， `<mainReason>` 是额度改变的原因。
 
 ## 依赖项
 
