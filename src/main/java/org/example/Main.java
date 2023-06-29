@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-    public static String addressPrefix = "E:\\CodeStorage\\Github\\week1_logs\\src\\main\\resources\\data\\";
+    public static String addressPrefix = "src/main/resources/data/";
     static ListFilesInFolder listFilesInFolder = new ListFilesInFolder(addressPrefix);
     static LogAnalyzer analyzer = new LogAnalyzer();
     static LogParser parser = new LogParser();
@@ -158,7 +158,7 @@ public class Main {
     private static CommandLine parseArgs(String[] args) {
         Options options = new Options();
         Option logFileOption = new Option("l", "logFilePath", true, "Path of log file");
-        logFileOption.setRequired(true);
+        //logFileOption.setRequired(true);
         options.addOption(logFileOption);
         Option gameSvrIdOption = new Option("g", "gameSvrId", true, "Game server ID");
         options.addOption(gameSvrIdOption);
