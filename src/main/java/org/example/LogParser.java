@@ -47,8 +47,8 @@ public class LogParser {
     int  currencyCounter= 0;
     int totalCounter = 0;
     public void printCounter(){
-        System.out.println("currencyCounter:"  + currencyCounter);
-        System.out.println("totalCounter:"  + totalCounter);
+        System.out.println("currency类出现的次数currencyCounter: "  + currencyCounter);
+        System.out.println("总的日志记录数totalCounter: "  + totalCounter);
     }
 public List<Log> parse(String logFile) {
     List<Log> logs = new ArrayList<>();

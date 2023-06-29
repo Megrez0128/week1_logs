@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
+    // 设置为相对路径
     public static String addressPrefix = "src/main/resources/data/";
     static ListFilesInFolder listFilesInFolder = new ListFilesInFolder(addressPrefix);
     static LogAnalyzer analyzer = new LogAnalyzer();
     static LogParser parser = new LogParser();
-    // TODO: 目前设置的是电脑本地绝对路径，可以改成相对路径
-    public static void main(String[] args) throws IOException {
+
+    public static void main(String[] args) {
         CommandLine cmd = parseArgs(args);
         if (cmd == null) {
             return;
@@ -63,11 +64,11 @@ public class Main {
 
     private static void outputQueryResult(String gameSvrId, String vUserID, String vRoleID, Integer mainReason, String result) {
         System.out.println("查询结果：");
-        System.out.println(String.format("登录的游戏服务器编号 GameSvrId: %s", gameSvrId));
-        System.out.println(String.format("\t用户ID vUserID: %s", vUserID));
-        System.out.println(String.format("\t\t玩家角色ID vRoleID: %s", vRoleID));
-        System.out.println(String.format("\t\t\t主要原因 MainReason: %d", mainReason));
-        System.out.println(String.format("\t\t\t%s", result));
+        System.out.printf("登录的游戏服务器编号 GameSvrId: %s%n", gameSvrId);
+        System.out.printf("\t用户ID vUserID: %s%n", vUserID);
+        System.out.printf("\t\t玩家角色ID vRoleID: %s%n", vRoleID);
+        System.out.printf("\t\t\t主要原因 MainReason: %d%n", mainReason);
+        System.out.printf("\t\t\t%s%n", result);
     }
 
     public static void outputToFile(Map<String, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
@@ -136,24 +137,24 @@ public class Main {
             }
         }
     }
-    public static void outputToConsoleWithReason(Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary) {
-        //将serverUserCharReasonSummary输出到控制台
-        for(Map.Entry<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> entry : serverUserCharReasonSummary.entrySet()){
-            System.out.println("登录的游戏服务器编号 GameSvrId:" + entry.getKey());
-            for(Map.Entry<String, Map<String,Map<Integer,Map<String,String>>>> entry1 : entry.getValue().entrySet()){
-                System.out.println("\t用户ID vUserID:" + entry1.getKey());
-                for(Map.Entry<String,Map<Integer,Map<String,String>>> entry2 : entry1.getValue().entrySet()){
-                    System.out.println("\t\t玩家角色ID vRoleID:" + entry2.getKey());
-                    for(Map.Entry<Integer,Map<String,String>> entry3 : entry2.getValue().entrySet()){
-                        System.out.println("\t\t\t主要原因 MainReason:" + entry3.getKey());
-                        for(Map.Entry<String,String> entry4 : entry3.getValue().entrySet()){
-                            System.out.println("\t\t\t-" + entry4.getKey() + ": " + entry4.getValue());
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    public static void outputToConsoleWithReason(Map<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary) {
+//        //将serverUserCharReasonSummary输出到控制台
+//        for(Map.Entry<String,Map<String, Map<String,Map<Integer,Map<String,String>>>>> entry : serverUserCharReasonSummary.entrySet()){
+//            System.out.println("登录的游戏服务器编号 GameSvrId:" + entry.getKey());
+//            for(Map.Entry<String, Map<String,Map<Integer,Map<String,String>>>> entry1 : entry.getValue().entrySet()){
+//                System.out.println("\t用户ID vUserID:" + entry1.getKey());
+//                for(Map.Entry<String,Map<Integer,Map<String,String>>> entry2 : entry1.getValue().entrySet()){
+//                    System.out.println("\t\t玩家角色ID vRoleID:" + entry2.getKey());
+//                    for(Map.Entry<Integer,Map<String,String>> entry3 : entry2.getValue().entrySet()){
+//                        System.out.println("\t\t\t主要原因 MainReason:" + entry3.getKey());
+//                        for(Map.Entry<String,String> entry4 : entry3.getValue().entrySet()){
+//                            System.out.println("\t\t\t-" + entry4.getKey() + ": " + entry4.getValue());
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private static CommandLine parseArgs(String[] args) {
         Options options = new Options();
