@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 public class LogAnalyzer {
-
+    Map<Integer,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary;
+    Map<Integer,Map<String, Map<String,Map<String,String>>>> serverUserCharSummary;
     public Map<Integer,Map<String, Map<String,Map<String,String>>>> summarizeByServerUserChar(List<CurrencyLog> currencyLogs) {
         //统计出区服->用户->角色->的总消耗额度和总增加额度信息
-        Map<Integer,Map<String, Map<String,Map<String,String>>>> serverUserCharSummary = new HashMap<>();
+        serverUserCharSummary = new HashMap<>();
         for (CurrencyLog currencyLog : currencyLogs) {
             //对于每一条log，如果其区服信息不在serverUserCharSummary中，则新建一个区服信息
             if (!serverUserCharSummary.containsKey(currencyLog.getiZoneAreaID())) {
@@ -40,7 +41,7 @@ public class LogAnalyzer {
     //TODO:
     public Map<Integer,Map<String, Map<String,Map<Integer,Map<String,String>>>>> summarizeByServerUserCharReason(List<CurrencyLog> currencyLogs) {
         //统计出区服->用户->角色->LogReason的总消耗额度和总增加额度信息
-        Map<Integer,Map<String, Map<String,Map<Integer,Map<String,String>>>>> serverUserCharReasonSummary = new HashMap<>();
+        serverUserCharReasonSummary = new HashMap<>();
         for(CurrencyLog currencyLog : currencyLogs) {
             if(!serverUserCharReasonSummary.containsKey(currencyLog.getiZoneAreaID())) {
                 serverUserCharReasonSummary.put(currencyLog.getiZoneAreaID(),new HashMap<>());
@@ -67,7 +68,7 @@ public class LogAnalyzer {
         return serverUserCharReasonSummary;
     }
 
-    public String query(Map<Integer, Map<String, Map<String, Map<Integer, Map<String, String>>>>> serverUserCharReasonSummary, Integer tmpSvrId, String vUserID, String vRoleID, Integer mainReason) {
+    public String query(Integer tmpSvrId, String vUserID, String vRoleID, Integer mainReason) {
 
         if(!serverUserCharReasonSummary.containsKey(tmpSvrId)) {
             return "区服不存在";

@@ -50,59 +50,61 @@ public class LogParser {
         System.out.println("currency类出现的次数currencyCounter: "  + currencyCounter);
         System.out.println("总的日志记录数totalCounter: "  + totalCounter);
     }
-public List<CurrencyLog> parse(String logFile) {
-    List<CurrencyLog> currencyLogs = new ArrayList<>();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    try (Stream<String> lines = Files.lines(Paths.get(logFile))) {
-        lines.forEach(line -> {
-            totalCounter++;
-            String[] fields = line.split("\\|");
-            if (fields.length != 30) {
-                return;
-            }
+    public List<CurrencyLog> parse(String logFile) {
+        List<CurrencyLog> currencyLogs = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        try {
+            Stream<String> lines = Files.lines(Paths.get(logFile));
+            for (String line : (Iterable<String>) lines::iterator) {
+                totalCounter++;
+                String[] fields = line.split("\\|");
+                if (fields.length != 30) {
+                    continue;
+                }
 
-            //以空格为分隔符，将field[0]分割成字符串数组，然后判断数组中最后一个不是"Currency"，则跳过这一行
-            String[] str = fields[0].split(" ");
-            if (!str[str.length - 1].equals("Currency")) {
-                return;
-            }
-            currencyCounter++;
+                //以空格为分隔符，将field[0]分割成字符串数组，然后判断数组中最后一个不是"Currency"，则跳过这一行
+                String[] str = fields[0].split(" ");
+                if (!str[str.length - 1].equals("Currency")) {
+                    continue;
+                }
+                currencyCounter++;
 
-            CurrencyLog currencyLog = new CurrencyLog(
-                fields[1],
-                LocalDateTime.parse(fields[2], formatter),
-                fields[3],
-                Integer.parseInt(fields[4]),
-                Integer.parseInt(fields[5]),
-                Integer.parseInt(fields[6]),
-                fields[7],
-                fields[8],
-                fields[9],
-                Integer.parseInt(fields[10]),
-                Integer.parseInt(fields[11]),
-                Integer.parseInt(fields[12]),
-                Integer.parseInt(fields[13]),
-                Integer.parseInt(fields[14]),
-                Integer.parseInt(fields[15]),
-                Integer.parseInt(fields[16]),
-                Integer.parseInt(fields[17]),
-                Integer.parseInt(fields[19]),
-                Long.parseLong(fields[20]),
-                Integer.parseInt(fields[21]),
-                Long.parseLong(fields[22]),
-                Integer.parseInt(fields[23]),
-                Long.parseLong(fields[24]),
-                Integer.parseInt(fields[25]),
-                Long.parseLong(fields[26]),
-                Integer.parseInt(fields[27]),
-                Long.parseLong(fields[28]),
-                Long.parseLong(fields[29])
-            );
-            currencyLogs.add(currencyLog);
-        });
-    } catch (IOException e) {
-        e.printStackTrace();
+                CurrencyLog currencyLog = new CurrencyLog(
+                    fields[1],
+                    LocalDateTime.parse(fields[2], formatter),
+                    fields[3],
+                    Integer.parseInt(fields[4]),
+                    Integer.parseInt(fields[5]),
+                    Integer.parseInt(fields[6]),
+                    fields[7],
+                    fields[8],
+                    fields[9],
+                    Integer.parseInt(fields[10]),
+                    Integer.parseInt(fields[11]),
+                    Integer.parseInt(fields[12]),
+                    Integer.parseInt(fields[13]),
+                    Integer.parseInt(fields[14]),
+                    Integer.parseInt(fields[15]),
+                    Integer.parseInt(fields[16]),
+                    Integer.parseInt(fields[17]),
+                    Integer.parseInt(fields[19]),
+                    Long.parseLong(fields[20]),
+                    Integer.parseInt(fields[21]),
+                    Long.parseLong(fields[22]),
+                    Integer.parseInt(fields[23]),
+                    Long.parseLong(fields[24]),
+                    Integer.parseInt(fields[25]),
+                    Long.parseLong(fields[26]),
+                    Integer.parseInt(fields[27]),
+                    Long.parseLong(fields[28]),
+                    Long.parseLong(fields[29])
+                );
+                currencyLogs.add(currencyLog);
+            }
+            lines.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return currencyLogs;
     }
-    return currencyLogs;
-}
 }
