@@ -11,9 +11,9 @@ import java.util.Map;
 public interface ResultOutput {
     static void outputToFile(Map<Integer, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(Main.addressPrefix + "output.1"))) {
-            String iZoneAreaID = "";
-            String userId = "";
-            String roleId = "";
+            String iZoneAreaID;
+            String userId;
+            String roleId;
             for (Map.Entry<Integer, Map<String, Map<String, Map<String, String>>>> entry : serverUserCharSummary.entrySet()) {
                 iZoneAreaID = String.valueOf(entry.getKey());
                 for (Map.Entry<String, Map<String, Map<String, String>>> entry1 : entry.getValue().entrySet()) {
@@ -30,16 +30,16 @@ public interface ResultOutput {
                 }
             }
         } catch (IOException e) {
-            throw new MainException(e, "完成日志分析，但无法写入output.1文件中！");
+            throw new MainException("完成日志分析，但无法写入output.1文件中！");
         }
     }
 
     static void outputToFileWithReason(Map<Integer, Map<String, Map<String, Map<Integer, Map<String, String>>>>> serverUserCharReasonSummary) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(Main.addressPrefix + "res.txt"))) {
-            String iZoneAreaID = "";
-            String userId = "";
-            String roleId = "";
-            String mainReason = "";
+            String iZoneAreaID;
+            String userId;
+            String roleId;
+            String mainReason;
             for (Map.Entry<Integer, Map<String, Map<String, Map<Integer, Map<String, String>>>>> entry : serverUserCharReasonSummary.entrySet()) {
                 iZoneAreaID = String.valueOf(entry.getKey());
                 for (Map.Entry<String, Map<String, Map<Integer, Map<String, String>>>> entry1 : entry.getValue().entrySet()) {
@@ -59,11 +59,11 @@ public interface ResultOutput {
                 }
             }
         } catch (IOException e) {
-            throw new MainException(e, "完成日志分析，但无法写入output.1文件中！");
+            throw new MainException("完成日志分析，但无法写入output.1文件中！");
         }
     }
 
-    public static void outputToConsole(Map<Integer, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
+    static void outputToConsole(Map<Integer, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
         //将serverUserCharSummary输出到控制台
         for (Map.Entry<Integer, Map<String, Map<String, Map<String, String>>>> entry : serverUserCharSummary.entrySet()) {
             System.out.println("iZoneAreaID:" + entry.getKey());
@@ -79,7 +79,7 @@ public interface ResultOutput {
         }
     }
 
-    public static void outputQueryResult(int getiZoneAreaID, String vUserID, String vRoleID, Integer mainReason, String result) {
+    static void outputQueryResult(int getiZoneAreaID, String vUserID, String vRoleID, Integer mainReason, String result) {
         System.out.println("The ouput of search:\n");
         System.out.printf("iZoneAreaID: %d%n", getiZoneAreaID);
         System.out.printf("\tvUserID: %s%n", vUserID);

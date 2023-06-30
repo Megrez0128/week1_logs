@@ -51,14 +51,14 @@ public class Main {
                 //将查询结果输出到控制台
                 ResultOutput.outputQueryResult(iZoneAreaID, vUserID, vRoleID, mainReason, result);
             }catch (Exception e){
-                throw new MainException(e, "请正确输入参数！" +
+                throw new MainException("请正确输入参数！" +
                         "正确格式为：java Main -l <logFilePath>或java Main -l <logFilePath> -i <iZoneAreaID> -u <vUserID> -r <vRoleID> -m <mainReason>");
             }
         } else {
             Map<Integer,Map<String, Map<String,Map<String,String>>>> serverUserCharSummary = analyzer.summarizeByServerUserChar(currencyLogs);
             //将serverUserCharSummary输出到文件和控制台
             ResultOutput.outputToFile(serverUserCharSummary);
-//            ResultOutput.outputToConsole(serverUserCharSummary);
+            ResultOutput.outputToConsole(serverUserCharSummary);
 
         }
 

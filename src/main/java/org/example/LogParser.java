@@ -3,7 +3,6 @@ package org.example;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -51,7 +50,6 @@ public class LogParser {
     }
     public List<CurrencyLog> parse(String logFile) {
         List<CurrencyLog> currencyLogs = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         try {
             Stream<String> lines = Files.lines(Paths.get(logFile));
             for (String line : (Iterable<String>) lines::iterator) {

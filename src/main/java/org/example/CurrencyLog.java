@@ -1,15 +1,15 @@
 package org.example;
 
 public class CurrencyLog {
-    private int iZoneAreaID;    //注册服ID，分区服场景使用。其他场景时填写0
-    private String vUserID; //TODO:用户ID
-    private String vRoleID; //TODO:玩家角色ID
-    private int changeValue;    //TODO:修改值 
-    private int changeType; //TODO:CurrencyChangeType {1:增加, 2:减少}
-    private int oldValue;   //旧值
-    private int newValue;   //新值 newValue = oldValue + changeValue * (changeType == 1 ? 1 : -1)
-    private int realChangeValue;    //实际变化值 realChangeValue = changeValue * (changeType == 1 ? 1 : -1)
-    private int mainReason; //TODO:货币修改主原因
+    private final int iZoneAreaID;    //注册服ID，分区服场景使用。其他场景时填写0
+    private final String vUserID; //TODO:用户ID
+    private final String vRoleID; //TODO:玩家角色ID
+    private final int changeValue;    //TODO:修改值
+    private final int changeType; //TODO:CurrencyChangeType {1:增加, 2:减少}
+    private final int oldValue;   //旧值
+    private final int newValue;   //新值 newValue = oldValue + changeValue * (changeType == 1 ? 1 : -1)
+    private final int realChangeValue;    //实际变化值 realChangeValue = changeValue * (changeType == 1 ? 1 : -1)
+    private final int mainReason; //TODO:货币修改主原因
 
     public CurrencyLog(int iZoneAreaID, String vUserID, String vRoleID, int changeValue, int changeType, int oldValue, int newValue, int realChangeValue, int mainReason) {
         this.iZoneAreaID = iZoneAreaID;

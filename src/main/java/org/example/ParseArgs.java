@@ -17,13 +17,12 @@ public class ParseArgs {
         options.addOption(mainReasonOption);
 
         CommandLineParser parser = new DefaultParser();
-        HelpFormatter formatter = new HelpFormatter();
         try {
             return parser.parse(options, args);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             //formatter.printHelp("java Main", options);
-            throw new MainException(e, "Parser出现错误，错误信息为" + e.getMessage());
+            throw new MainException("Parser出现错误，错误信息为" + e.getMessage());
         }
     }
 }
