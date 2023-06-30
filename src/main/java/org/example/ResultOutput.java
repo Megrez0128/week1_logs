@@ -4,9 +4,11 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
-
+/*
+将serverUserCharReasonSummary以日志形式输出到文件
+其中，正常情况下会调用outputToFile，只有在需要查询mainReason时会调用outputToFileWithReason
+ */
 public interface ResultOutput {
-    //将serverUserCharReasonSummary以日志形式输出到文件
     static void outputToFile(Map<Integer, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(Main.addressPrefix + "output.1"))) {
             String iZoneAreaID = "";
@@ -28,7 +30,7 @@ public interface ResultOutput {
                 }
             }
         } catch (IOException e) {
-            throw new MainException(e);
+            throw new MainException(e, "完成日志分析，但无法写入output.1文件中！");
         }
     }
 
@@ -57,18 +59,18 @@ public interface ResultOutput {
                 }
             }
         } catch (IOException e) {
-            throw new MainException(e);
+            throw new MainException(e, "完成日志分析，但无法写入output.1文件中！");
         }
     }
 
     public static void outputToConsole(Map<Integer, Map<String, Map<String, Map<String, String>>>> serverUserCharSummary) {
         //将serverUserCharSummary输出到控制台
         for (Map.Entry<Integer, Map<String, Map<String, Map<String, String>>>> entry : serverUserCharSummary.entrySet()) {
-            System.out.println("注册的游戏服务器编号 iZoneAreaID:" + entry.getKey());
+            System.out.println("iZoneAreaID:" + entry.getKey());
             for (Map.Entry<String, Map<String, Map<String, String>>> entry1 : entry.getValue().entrySet()) {
-                System.out.println("\t用户ID vUserID:" + entry1.getKey());
+                System.out.println("\tvUserID:" + entry1.getKey());
                 for (Map.Entry<String, Map<String, String>> entry2 : entry1.getValue().entrySet()) {
-                    System.out.println("\t\t玩家角色ID vRoleID:" + entry2.getKey());
+                    System.out.println("\t\tvRoleID:" + entry2.getKey());
                     for (Map.Entry<String, String> entry3 : entry2.getValue().entrySet()) {
                         System.out.println("\t\t-" + entry3.getKey() + ": " + entry3.getValue());
                     }
@@ -78,11 +80,11 @@ public interface ResultOutput {
     }
 
     public static void outputQueryResult(int getiZoneAreaID, String vUserID, String vRoleID, Integer mainReason, String result) {
-        System.out.println("查询结果：");
-        System.out.printf("注册的游戏服务器编号 iZoneAreaID: %d%n", getiZoneAreaID);
-        System.out.printf("\t用户ID vUserID: %s%n", vUserID);
-        System.out.printf("\t\t玩家角色ID vRoleID: %s%n", vRoleID);
-        System.out.printf("\t\t\t主要原因 MainReason: %d%n", mainReason);
+        System.out.println("The ouput of search:\n");
+        System.out.printf("iZoneAreaID: %d%n", getiZoneAreaID);
+        System.out.printf("\tvUserID: %s%n", vUserID);
+        System.out.printf("\t\tvRoleID: %s%n", vRoleID);
+        System.out.printf("\t\t\tMainReason: %d%n", mainReason);
         System.out.printf("\t\t\t%s%n", result);
     }
 

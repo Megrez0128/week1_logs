@@ -3,7 +3,6 @@ package org.example;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +46,8 @@ public class LogParser {
     int  currencyCounter= 0;
     int totalCounter = 0;
     public void printCounter(){
-        System.out.println("currency类出现的次数currencyCounter: "  + currencyCounter);
-        System.out.println("总的日志记录数totalCounter: "  + totalCounter);
+        System.out.println("The number of LOGs from Currency: "  + currencyCounter);
+        System.out.println("The number of LOGs: "  + totalCounter);
     }
     public List<CurrencyLog> parse(String logFile) {
         List<CurrencyLog> currencyLogs = new ArrayList<>();
@@ -70,34 +69,15 @@ public class LogParser {
                 currencyCounter++;
 
                 CurrencyLog currencyLog = new CurrencyLog(
-                    fields[1],
-                    LocalDateTime.parse(fields[2], formatter),
-                    fields[3],
-                    Integer.parseInt(fields[4]),
                     Integer.parseInt(fields[5]),
-                    Integer.parseInt(fields[6]),
-                    fields[7],
                     fields[8],
                     fields[9],
-                    Integer.parseInt(fields[10]),
-                    Integer.parseInt(fields[11]),
-                    Integer.parseInt(fields[12]),
                     Integer.parseInt(fields[13]),
                     Integer.parseInt(fields[14]),
                     Integer.parseInt(fields[15]),
                     Integer.parseInt(fields[16]),
                     Integer.parseInt(fields[17]),
-                    Integer.parseInt(fields[19]),
-                    Long.parseLong(fields[20]),
-                    Integer.parseInt(fields[21]),
-                    Long.parseLong(fields[22]),
-                    Integer.parseInt(fields[23]),
-                    Long.parseLong(fields[24]),
-                    Integer.parseInt(fields[25]),
-                    Long.parseLong(fields[26]),
-                    Integer.parseInt(fields[27]),
-                    Long.parseLong(fields[28]),
-                    Long.parseLong(fields[29])
+                    Integer.parseInt(fields[19])
                 );
                 currencyLogs.add(currencyLog);
             }

@@ -22,8 +22,8 @@ public class ParseArgs {
             return parser.parse(options, args);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
-            formatter.printHelp("java Main", options);
-            return null;
+            //formatter.printHelp("java Main", options);
+            throw new MainException(e, "Parser出现错误，错误信息为" + e.getMessage());
         }
     }
 }
