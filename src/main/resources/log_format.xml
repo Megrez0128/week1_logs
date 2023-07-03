@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<struct name="CurrencyStatistics" version="1" desc="(必填)货币流水统计" type="2">
+    <entry name="iZoneAreaID" type="int" index="1" defaultvalue="0" desc="(必填)注册服ID，分区服场景使用。其他场景时填写0"/>
+    <entry name="vUserID" type="string" size="128" desc="(必填)用户ID"/>
+    <entry name="vRoleID" type="string" size="64" defaultvalue="NULL" desc="(必填)玩家角色ID"/>
+    <entry name="totalConsumptionValue" type="int" desc="总消耗值"/>
+    <entry name="totalAddedValue" type="int" desc="总增加值"/>
+    <entry name="mainReason" type="int" desc="MainReason"/>
+</struct>

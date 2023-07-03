@@ -102,6 +102,11 @@
 
 ## 预备知识整理
 
+### 日志打印格式
+"[jingji]PCJingjiJoin.processImp@can not join|roleid=%d", this.roleid
+`[jingji]`为模块名，`PCJingjiJoin`为类名，`processImp`为方法名，@之后为对该报错信息的原因说明（自定义），|之后用竖线|分割，标记上下文可能用到的参数和值
+> 参数值的部分尽可能用小写字母+下划线的命名方式
+
 ### Bash shell基础命令
 
 `grep`是一个在Linux系统中常用的命令行工具，用于在文件中查找指定的字符串。`grep`命令的基本语法如下：
